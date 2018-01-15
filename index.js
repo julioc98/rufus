@@ -1,12 +1,6 @@
-const request = require('request');
+const request = require('request-promise-native');
 // const cheerio = require('cheerio');
 
-// const michelin = [
-//   {
-//     url: 'http://www.michelin.com.ar/AR/es/tires/BMW/X1/2017/sDRIVE%2020i.html',
-//     words: ['No podemos encontrar ningún neumático que coincida con tu vehículo.', 'oi'],
-//   },
-// ];
 
 const michelin = [
   {
@@ -19,45 +13,34 @@ const michelin = [
   },
 ];
 
-// const google = [
-//   {
-//     url: 'http://google.com',
-//     words: ['google', 'oi'],
-//   },
-// ];
 
-function searchWord(body, words) {
+async function searchWord(url, body, words) {
   const res = words.map((word) => {
     const result = body.search(word);
     // console.log(body);
     if (result !== -1) {
-      console.log('OK ', word, result);
-      return true;
+      // console.log('OK ', word, result);
+      return { url, ok: true, word };
     }
-    console.log('Not OK', word, result);
-    return false;
+    // console.log('Not OK', word, result);
+    return { url, ok: false, word };
   });
   return res;
 }
 
-function searchWordInPage(struct) {
-  const result = struct.map((item) => {
-    // console.log(item.url);
-    request(item.url, (error, response, body) => {
-      if (!error) {
-        return searchWord(body, item.words);
-      }
-      return error;
-    });
-  });
-  return result;
-  // return result;
-  // console.log(struct['http://www.michelin.com.ar/AR/es/tires/215/65/15/96/H.html']);
-}
 
 function main() {
-  const resut = searchWordInPage(michelin);
-  // console.log(resut);
+  const pro = michelin.map((item) => {
+    const req = request(item.url);
+    const res = req.then((body) => {
+      const ret = searchWord(item.url, body, item.words);
+      return ret;
+    });
+    return res;
+  });
+
+  Promise.all(pro).then(console.log);
+  // Promise.all(pro).then(test).then(console.log);
 }
 
 main();
