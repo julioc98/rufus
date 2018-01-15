@@ -1,0 +1,28 @@
+{
+  "name": "rufus",
+  "version": "1.0.0",
+  "description": "Scraping demo",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/julioc98/rufus.git"
+  },
+  "author": "julioc98",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/julioc98/rufus/issues"
+  },
+  "homepage": "https://github.com/julioc98/rufus#readme",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.2",
+    "request": "^2.83.0"
+  },
+  "devDependencies": {
+    "eslint": "^4.15.0",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.8.0"
+  }
+}
