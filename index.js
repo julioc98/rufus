@@ -17,20 +17,16 @@ const michelin = [
 async function searchWord(url, body, words) {
   const res = words.map((word) => {
     const result = body.search(word);
-    // console.log(body);
     if (result !== -1) {
-      // console.log('OK ', word, result);
       return { url, ok: true, word };
     }
-    // console.log('Not OK', word, result);
     return { url, ok: false, word };
   });
   return res;
 }
 
-
-function main() {
-  const pro = michelin.map((item) => {
+function searchInPage(obj) {
+  return obj.map((item) => {
     const req = request(item.url);
     const res = req.then((body) => {
       const ret = searchWord(item.url, body, item.words);
@@ -38,6 +34,11 @@ function main() {
     });
     return res;
   });
+}
+
+
+function main() {
+  const pro = searchInPage(michelin);
 
   Promise.all(pro).then(console.log);
   // Promise.all(pro).then(test).then(console.log);
